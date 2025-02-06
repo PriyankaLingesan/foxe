@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mindful Vibes - Mood Analyzer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Base styles */
+        body {
+            font-family: 'Dancing Script', cursive;
+            background: linear-gradient(to right, #f2f5fa, #dfe9f3);
+            color: #333;
+            text-align: center;
+            padding: 40px 10px;
+            font-weight: bold;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #3a506b;
+            letter-spacing: 3px;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        h2 {
+            font-size: 24px;
+            color: #1e3550;
+            margin: 20px 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .container:hover {
+            transform: scale(1.05);
+        }
+
+        select, button {
+            width: 100%;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 6px;
+            font-size: 18px;
+            font-family: 'Dancing Script', cursive;
+            border: 2px solid #b0bec5;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        select:hover, button:hover {
+            transform: scale(1.05);
+            border-color: #3a506b;
+        }
+
+        button {
+            background-color: #3a506b;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #1e3550;
+        }
+
+        .quote {
+            font-size: 20px;
+            color: #607d8b;
+            margin-top: 30px;
+            font-style: italic;
+            animation: fadeInUp 2s ease-in-out;
+        }
+
+        /* Animation for fade-in */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Animation for quote */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Chart styles */
+        .chart-container {
+            margin-top: 50px;
+            width: 80%;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .chart {
+            display: block;
+            margin: auto;
+        }
+
+        /* Bars to compare moods */
+        .mood-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .bar {
+            width: 45%;
+            height: 30px;
+            border-radius: 10px;
+            background-color: #4caf50;
+            transition: all 0.3s ease;
+        }
+
+        .bar.last-login {
+            background-color: #ff5722;
+        }
+
+        .bar:hover {
+            transform: scale(1.05);
+        }
+
+        .bar-text {
+            text-align: center;
+            padding: 5px 0;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+
+<h1>Mindful Vibes</h1>
+<h2>Your Personal Mood Analyzer</h2>
+
+<div class="container">
+    <form id="moodForm">
+        <label for="loneliness">How often do you feel socially fulfilled?</label>
+        <select name="loneliness" id="loneliness" required>
+            <option value="1">Always (Strong social support)</option>
+            <option value="2">Mostly (Some close connections)</option>
+            <option value="3">Sometimes (Occasionally lonely)</option>
+            <option value="4">Rarely (Feeling isolated)</option>
+            <option value="5">Never (Deep loneliness)</option>
+        </select>
+
+        <label for="stress">How well do you manage stress?</label>
+        <select name="stress" id="stress" required>
+            <option value="1">Very well (Calm and collected)</option>
+            <option value="2">Mostly good (Occasional stress)</option>
+            <option value="3">Neutral (Balance of stress and peace)</option>
+            <option value="4">Struggling (Feeling overwhelmed)</option>
+            <option value="5">Highly stressed (Constant pressure)</option>
+        </select>
+
+        <label for="motivation">How motivated do you feel on a daily basis?</label>
+        <select name="motivation" id="motivation" required>
+            <option value="1">Highly motivated (Ready to achieve goals)</option>
+            <option value="2">Mostly motivated (Driven but needs a push)</option>
+            <option value="3">Neutral (Motivation fluctuates)</option>
+            <option value="4">Low motivation (Struggling to find purpose)</option>
+            <option value="5">No motivation (Feeling stuck)</option>
+        </select>
+
+        <button type="submit">Analyze My Mood</button>
+    </form>
+
+    <div class="quote">
+        "The only way out is through." - Robert Frost
+    </div>
+
+    <div class="chart-container">
+        <canvas id="moodChart" class="chart"></canvas>
+    </div>
+
+    <div class="mood-bar">
+        <div class="bar last-login">
+            <div class="bar-text">Last Login Mood</div>
+        </div>
+        <div class="bar">
+            <div class="bar-text">Current Mood</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Pie chart for mood analysis
+    let ctx = document.getElementById('moodChart').getContext('2d');
+    let moodChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Loneliness', 'Stress', 'Motivation'],
+            datasets: [{
+                label: 'Mood Analysis',
+                data: [0, 0, 0], // Default data
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCD56'],
+                borderColor: ['#FF6384', '#36A2EB', '#FFCD56'],
+                borderWidth: 1
+            }]
+        }
+    });
+
+    // Function to handle form submission and mood analysis
+    document.getElementById('moodForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        let loneliness = parseInt(document.getElementById('loneliness').value);
+        let stress = parseInt(document.getElementById('stress').value);
+        let motivation = parseInt(document.getElementById('motivation').value);
+
+        // Updating the pie chart with the new values
+        moodChart.data.datasets[0].data = [loneliness, stress, motivation];
+        moodChart.update();
+
+        // Display the bars comparing the last login and current mood
+        let lastLoginMood = 60; // Placeholder value for last login mood
+        let currentMood = (100 - loneliness * 10); // Example calculation for current mood
+        document.querySelectorAll('.bar')[0].style.width = ${lastLoginMood}%;
+        document.querySelectorAll('.bar')[1].style.width = ${currentMood}%;
+
+        // Thoughtful quote animation
+        let quotes = ["Your mind is a garden, your thoughts are the seeds.", "Believe in yourself and all that you are.", "You are stronger than you think."];
+        let quoteIndex = 0;
+
+        setInterval(() => {
+            document.querySelector('.quote').innerHTML = quotes[quoteIndex];
+            quoteIndex = (quoteIndex + 1) % quotes.length;
+        }, 5000);
+    });
+</script>
+
+</body>
+</html>
