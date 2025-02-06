@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealHarbor - Your Sanctuary for the Mind</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', serif; /* Changed font to Times New Roman */
+            background: linear-gradient(135deg, #87CEEB, #FFB6C1);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .header {
+            font-size: 4em;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite, fadeIn 2s;
+            color: #4863a0;
+            font-weight: bold;
+        }
+
+        .subheader {
+            font-size: 2em;
+            margin-bottom: 30px;
+            animation: fadeIn 2s;
+            color: #354f84;
+            font-weight: bold;
+        }
+
+        .content {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;
+            animation: slideIn 2s;
+            position: relative;
+            font-size: 1.3em;
+            line-height: 1.5;
+        }
+
+        .content p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #4863a0;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            font-weight: bold;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .cta-button:hover {
+            background-color: #354f84;
+            transform: scale(1.1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">Welcome to HealHarbor</div>
+    <div class="subheader">Your Sanctuary for the Mind</div>
+    <div class="content">
+        <p>HealHarbor is a sanctuary for your mind, offering personalized tools and insights to help you better understand and manage your emotional well-being. Through interactive features like mood tracking, tailored mental wellness analysis, and thoughtful quotes, HealHarbor empowers you to take control of your mental health journey.</p>
+        <p>Whether you're seeking emotional balance or simply a safe space to reflect, HealHarbor is here to guide you toward inner peace and healing, one wave at a time.</p>
+        <a href="login.html" class="cta-button">Get Started</a>
+    </div>
+</body>
+</html>
